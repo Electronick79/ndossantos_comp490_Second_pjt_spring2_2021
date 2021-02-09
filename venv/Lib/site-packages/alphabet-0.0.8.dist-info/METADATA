@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: alphabet
+Version: 0.0.8
+Summary: Uses various methods to recognize text
+Home-page: https://github.com/reale/alphabet
+Author: Roberto Reale
+Author-email: roberto@reale.me
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: googletrans
+Requires-Dist: filemagic
+Requires-Dist: pygments
+
+========
+alphabet
+========
+
+.. image:: https://img.shields.io/pypi/v/alphabet.svg
+   :alt: PyPI
+
+
+``alphabet`` uses various methods to recognize text.
+
+Installation
+------------
+
+The easiest way to install the package is via ``pip``::
+
+    $ pip install alphabet
+
+Usage
+-----
+
+**Obfuscation**
+
+.. code:: python
+
+    from alphabet import alphabet
+
+    key = "foobar"
+    s = alphabet.alphabet("python")
+
+    print(s)
+    > python
+
+    t = s.obfuscate(key)
+    print(bytes(t, 'utf-8'))
+    > b'\x16\x16\x1b\n\x0e\x1c'
+
+    print(t.obfuscate(key))
+    > python
+
+**Identify a string**
+
+.. code:: python
+
+    from alphabet import alphabet
+
+    alphabet('%!').identify()
+    > 'PostScript document text'
+
+    alphabet('import os').identify()
+    > 'Python'
+
+    alphabet('<div>foobar</div>').identify()
+    > 'XML'
+
+    alphabet('Привет').identify()
+    > 'ru'
+
+
