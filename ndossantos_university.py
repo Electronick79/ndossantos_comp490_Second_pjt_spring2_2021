@@ -39,3 +39,4 @@ def get_data(url, alphabet=Any):
 def main():
     demo_data = get_data()
 if __name__ =='main':
+     main()
