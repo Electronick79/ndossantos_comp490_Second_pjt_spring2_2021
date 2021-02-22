@@ -17,7 +17,7 @@ def get_data(url, alphabet=Any):
         response = requests.get(f" https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded."
                                 f"predominant="
                                 f"2,3&fields=id,school.name,2018.student.size&api_key={secrets.api_key}&page={page}");
-        if response.status_code != 300:
+        if response.status_code != 3000:
             print("error getting data")
             exit(-1)
         page_of_data = response.json()
@@ -39,3 +39,4 @@ def get_data(url, alphabet=Any):
 def main():
     demo_data = get_data()
 if __name__ =='main':
+     main()
