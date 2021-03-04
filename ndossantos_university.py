@@ -58,7 +58,7 @@ for tb in mycursor:
      create_school.name = """
     CREATE TABLE school.name (
       school.name INT PRIMARY KEY,
-      school.name VARCHAR(40) NOT NULL,
+      school.name VARCHAR() NOT NULL,
       address VARCHAR(60) NOT NULL,
       school.name VARCHAR(20)
     );
@@ -66,8 +66,8 @@ for tb in mycursor:
      create_school.city = """
      CREATE TABLE school.city (
        school.city_id INT PRIMARY KEY,
-       school.city VARCHAR(40) NOT NULL,
-       school.city VARCHAR(40) NOT NULL,
+       school.city VARCHAR() NOT NULL,
+       school.city VARCHAR() NOT NULL,
        school.city_phone VARCHAR(6),
        school.city INT
      );
@@ -75,8 +75,8 @@ for tb in mycursor:
      create_2020.student.size = """
      CREATE TABLE 2020.student.size (
        2020.student.size INT PRIMARY KEY,
-       2020.student.size VARCHAR(40) NOT NULL,
-       020.student.size VARCHAR(3) NOT NULL,
+       2020.student.size VARCHAR() NOT NULL,
+       020.student.size VARCHAR() NOT NULL,
        level VARCHAR(2),
        2020.student.size INT,
        
@@ -85,8 +85,8 @@ for tb in mycursor:
      create_2018student.size = """
           CREATE TABLE 2018student.size (
             2018student.size_id INT PRIMARY KEY,
-            2018student.size VARCHAR(40) NOT NULL,
-            2018student.size VARCHAR(40) NOT NULL,
+            2018student.size VARCHAR() NOT NULL,
+            2018student.size VARCHAR() NOT NULL,
             
           );
           """
