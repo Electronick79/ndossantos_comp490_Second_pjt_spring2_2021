@@ -35,10 +35,10 @@ db_cursor.execute("SHOW DATABASES")
 for db in db_cursor:
     print(db)
 
-df = pd.read_csv(r'Path where the XLSX file is stored\COMP490_SPRING_3.XLSX')
+df = pd.read_xlsx(r'Path where the XLSX file is stored\COMP490_SPRING_3.XLSX')
 print(df)
 
-df = pd.read_csv(r'C:\Users\Electronick\OneDrive\Desktop\COMP_490\COMP490_SPRING_3.xlsx')   #read the csv file (put 'r' before the path string to address any special characters in the path, such as '\').
+df = pd.read_xlsx(r'C:\Users\Electronick\OneDrive\Desktop\COMP_490\COMP490_SPRING_3.xlsx')   #read the csv file (put 'r' before the path string to address any special characters in the path, such as '\').
 
 print(df)
 
