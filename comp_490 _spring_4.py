@@ -1,12 +1,15 @@
-import requests
-import tkinter
-import os
-from tkinter import *
-from tkinter.messagebox import *
 from tkinter.filedialog import *
+from tkinter.messagebox import *
 
+import pandas as pd
+import numpy as np
+
+
+# When your program first starts up, with the python GUI, allow the user to choose to either
+# update the data run the data visualization
 
 class Notepad:
+
     __root = Tk()
 
     # default window width and height
@@ -22,11 +25,12 @@ class Notepad:
     __thisScrollBar = Scrollbar(__thisTextArea)
     __file = None
 
+
     def __init__(self, **kwargs):
 
         # Set icon
         try:
-            self.__root.wm_iconbitmap("Notepad.ico")
+            self.__root.wm_iconbitmap("Excel.ico")
         except:
             pass
 
@@ -43,7 +47,7 @@ class Notepad:
             pass
 
         # Set the window text
-        self.__root.title("Untitled - Notepad")
+        self.__root.title("Untitled - Excel")
 
         # Center the window
         screenWidth = self.__root.winfo_screenwidth()
@@ -103,7 +107,7 @@ class Notepad:
                                        menu=self.__thisEditMenu)
 
         # To create a feature of description of the notepad
-        self.__thisHelpMenu.add_command(label="About Notepad",
+        self.__thisHelpMenu.add_command(label="About Excel",
                                         command=self.__showAbout)
         self.__thisMenuBar.add_cascade(label="Help",
                                        menu=self.__thisHelpMenu)
@@ -116,19 +120,67 @@ class Notepad:
         self.__thisScrollBar.config(command=self.__thisTextArea.yview)
         self.__thisTextArea.config(yscrollcommand=self.__thisScrollBar.set)
 
+        # ////////////////////////////////////////////////////////////////////////////////////////////////
+        # When your program first starts up, with the python GUI, allow the user to choose to either
+        # update the data run the data visualization
+        from bokeh.io import output_file, output_notebook
+        from bokeh.plotting import figure, show
+        from bokeh.models import ColumnDataSource
+        from bokeh.layouts import row, column, gridplot
+        from bokeh.models.widgets import Tabs, Panel
+
+        # Determine where the visualization will be rendered
+        output_file('filename.html')
+        output_notebook()  # Render inline in a Jupyter Notebook
+
+        # Set up the figure(s)
+        fig = figure()
+
+        df = pd.read_xlsx(r'C:\Users\Electronick\OneDrive\Desktop\COMP_490\COMP490_SPRING_3.xlsx')
+        # Create an empty string called ticker_string
+        ticker_string = ''
+        # Loop through every element of `tickers` and add them and a comma to ticker_string
+        for ticker in tickers:
+            ticker_string += ticker
+            ticker_string += ','
+        # Drop the last comma from `ticker_string`
+        ticker_string = ticker_string[:-1]
+
+        # Create the endpoint and years strings
+        endpoints = 'chart'
+        years = '5'
+        #   When updating the data: let the user choose the file name for the excel file
+        def writer(header, data, filename, option):
+            with open(filename, "w", newline="") as xlsxfile:
+                if option == "write":
+
+                    movies = xlsxfile.writer(csvfile)
+                    movies.writerow(header)
+                    for x in data:
+                        movies.writerow(x)
+                elif option == "update":
+                    writer = xlsx.DictWriter(csvfile, fieldnames=header)
+                    writer.writeheader()
+                    writer.writerows(data)
+                else:
+                    print("Option is not known")
+
+
+        # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
     def __quitApplication(self):
         self.__root.destroy()
 
     # exit()
 
     def __showAbout(self):
-        showinfo("Notepad", "Mrinal Verma")
+        showinfo("Excel", "Mrinal Verma")
 
     def __openFile(self):
 
-        self.__file = askopenfilename(defaultextension=".txt",
+        self.__file = askopenfilename(defaultextension=".xlsx",
                                       filetypes=[("All Files", "*.*"),
-                                                 ("Text Documents", "*.txt")])
+                                                 ("Xlsx Documents", "*.xlsx")])
 
         if self.__file == "":
 
@@ -138,7 +190,7 @@ class Notepad:
 
             # Try to open the file
             # set the window title
-            self.__root.title(os.path.basename(self.__file) + " - Notepad")
+            self.__root.title(os.path.basename(self.__file) + "r'C:\ Users\Electronick\OneDrive\Desktop\COMP_490\COMP490_SPRING_4.xlsx ")
             self.__thisTextArea.delete(1.0, END)
 
             file = open(self.__file, "r")
@@ -148,7 +200,7 @@ class Notepad:
             file.close()
 
     def __newFile(self):
-        self.__root.title("Untitled - Notepad")
+        self.__root.title("Untitled - Excel")
         self.__file = None
         self.__thisTextArea.delete(1.0, END)
 
@@ -156,10 +208,10 @@ class Notepad:
 
         if self.__file == None:
             # Save as new file
-            self.__file = asksaveasfilename(initialfile='Untitled.txt',
-                                            defaultextension=".txt",
+            self.__file = asksaveasfilename(initialfile='Untitled.xlsx',
+                                            defaultextension=".xlsx",
                                             filetypes=[("All Files", "*.*"),
-                                                       ("Text Documents", "*.txt")])
+                                                       ("Exel Documents", "*.xlsx")])
 
             if self.__file == "":
                 self.__file = None
@@ -171,7 +223,7 @@ class Notepad:
                 file.close()
 
                 # Change the window title
-                self.__root.title(os.path.basename(self.__file) + " - Notepad")
+                self.__root.title(os.path.basename(self.__file) + " - Excel")
 
 
         else:
@@ -196,5 +248,5 @@ class Notepad:
     # Run main application
 
 
-notepad = Notepad(width=600, height=400)
-notepad.run()
+Excel = excel(width=600, height=400)
+excel.run()
