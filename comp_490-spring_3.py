@@ -9,6 +9,7 @@ conn = pyodbc.connect('Driver={SQL Server};'
                       'Server=server_name;'
                       'Database=database_name;'
                       'Trusted_Connection=yes;')
+ndossantos_comp490_fourth_pjt_spring4_2021
 
 cursor = conn.cursor()
 cursor.execute('SELECT * FROM database_name.table')
