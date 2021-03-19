@@ -4,11 +4,14 @@ from tkinter.messagebox import *
 import pandas as pd
 import numpy as np
 
+import math
+import geopandas
+import json
 
 # When your program first starts up, with the python GUI, allow the user to choose to either
 # update the data run the data visualization
 
-class Notepad:
+class excel:
 
     __root = Tk()
 
@@ -123,11 +126,36 @@ class Notepad:
         # ////////////////////////////////////////////////////////////////////////////////////////////////
         # When your program first starts up, with the python GUI, allow the user to choose to either
         # update the data run the data visualization
-        from bokeh.io import output_file, output_notebook
-        from bokeh.plotting import figure, show
-        from bokeh.models import ColumnDataSource
-        from bokeh.layouts import row, column, gridplot
-        from bokeh.models.widgets import Tabs, Panel
+        # https://towardsdatascience.com/how-to-create-an-interactive-geographic-map-using-python
+        # -and-bokeh-12981ca0b567
+        from bokeh.io import output_notebook, show, output_file
+        from bokeh.plotting import figure
+        from bokeh.models import GeoJSONDataSource, LinearColorMapper, ColorBar, NumeralTickFormatter
+        from bokeh.palettes import brewer
+
+        from bokeh.io.doc import curdoc
+        from bokeh.models import Slider, HoverTool, Select
+        from bokeh.layouts import widgetbox, row, column
+
+        # Read the geojson map file for Realtor Neighborhoods into a GeoDataframe object
+        sf = geopandas.read_file('https://raw.githubusercontent.com/JimKing100/SF_Real_Estate_Live/master'
+                                 '/data/Realtor%20Neighborhoods.geojson')
+
+        # Set the Coordinate Referance System (crs) for projections
+        # ESPG code 4326 is also referred to as WGS84 lat-long projection
+        sf.crs = {'init': 'epsg:4326'}
+
+        # Rename columns in geojson map file
+        sf = sf.rename(columns={'geometry': 'geometry', 'nbrhood': 'neighborhood_name',
+                                'nid': 'subdist_no'}).set_geometry('geometry')
+
+        # Change neighborhood id (subdist_no) for correct code for Mount Davidson Manor and for parks
+        sf.loc[sf['neighborhood_name'] == 'Mount Davidson Manor', 'subdist_no'] = '4n'
+        sf.loc[sf['neighborhood_name'] == 'Golden Gate Park', 'subdist_no'] = '12a'
+        sf.loc[sf['neighborhood_name'] == 'Presidio', 'subdist_no'] = '12b'
+        sf.loc[sf['neighborhood_name'] == 'Lincoln Park', 'subdist_no'] = '12c'
+
+        sf.sort_values(by=['subdist_no'])
 
         # Determine where the visualization will be rendered
         output_file('filename.html')
@@ -135,6 +163,7 @@ class Notepad:
 
         # Set up the figure(s)
         fig = figure()
+        show(fig)
 
         df = pd.read_xlsx(r'C:\Users\Electronick\OneDrive\Desktop\COMP_490\COMP490_SPRING_3.xlsx')
         # Create an empty string called ticker_string
@@ -149,6 +178,8 @@ class Notepad:
         # Create the endpoint and years strings
         endpoints = 'chart'
         years = '5'
+
+
         #   When updating the data: let the user choose the file name for the excel file
         def writer(header, data, filename, option):
             with open(filename, "w", newline="") as xlsxfile:
@@ -164,6 +195,18 @@ class Notepad:
                     writer.writerows(data)
                 else:
                     print("Option is not known")
+
+                    # The data visualization: provide the user the ability to do two forms of data analysis,The first
+                    # analysis.should display the data in a color coded text format as a list in ascending or descending
+                    # order (let the user choose) and the second should render a map to visualize the data.
+
+                    iris = pd.read_xlsx('iris.xlsx',
+                                       names=[ "school.city_id INT PRIMARY KEY, school.city VARCHAR() NOT NULL, school.city "
+                                               "VARCHAR() NOT NULL, school.city_phone VARCHAR(6), school.city INT"])
+                    print(iris.head())
+
+
+
 
 
         # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -248,5 +291,5 @@ class Notepad:
     # Run main application
 
 
-Excel = excel(width=600, height=400)
+excel = excel(width=600, height=400)
 excel.run()
